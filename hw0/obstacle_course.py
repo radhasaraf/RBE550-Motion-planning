@@ -24,7 +24,7 @@ if not COVERAGE:
 TOTAL_PIXELS = 128 * 128
 
 
-def get_coverage(image: Image):
+def get_coverage(image: Image) -> float:
     black_pixels = 0
     for pixel in image.getdata():
         if pixel != 0:
@@ -34,7 +34,7 @@ def get_coverage(image: Image):
     return black_pixels / TOTAL_PIXELS
 
 
-def place_tetromino_in_image(position: Tuple, tetromino_type: str, image):
+def place_tetromino_in_image(position: Tuple, tetromino_type: str, image) -> Image:
     x = position[0]
     y = position[1]
 
