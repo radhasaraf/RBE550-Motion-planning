@@ -21,17 +21,15 @@ if not COVERAGE:
     print("Error: Coverage to use isn't specified.")
     os.abort()
 
-TOTAL_PIXELS = 128 * 128
 
-
-def get_coverage(image: Image) -> float:
+def get_coverage(image: Image, size_in_pixels: int) -> float:
     black_pixels = 0
     for pixel in image.getdata():
         if pixel != 0:
             continue
         black_pixels += 1
 
-    return black_pixels / TOTAL_PIXELS
+    return black_pixels / size_in_pixels ** 2
 
 
 def place_tetromino_in_image(position: Tuple, tetromino_type: str, image) -> Image:
@@ -65,10 +63,12 @@ def place_tetromino_in_image(position: Tuple, tetromino_type: str, image) -> Ima
     return image
 
 
-if __name__ == "__main__":
-    grid = Image.new("1", (128, 128), color=1)
-
-    desired_coverage = COVERAGE / 100
+def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> Image:
+    print(
+        f"Creating obstacle grid({grid_size}x{grid_size}) with coverage of {coverage}%"
+    )
+    grid = Image.new("1", (grid_size, grid_size), color=1)
+    desired_coverage = coverage / 100
 
     current_coverage, window_index = 0, 0
     while current_coverage < desired_coverage:
@@ -81,15 +81,22 @@ if __name__ == "__main__":
         grid = place_tetromino_in_image(
             (random_x, random_y), random_tetromino_index, grid
         )
-        current_coverage = get_coverage(grid)
+        current_coverage = get_coverage(grid, grid_size)
 
         plt.imshow(grid)
         plt.axis("off")
-        if window_index % 3 == 0:  # Pauses only occasionally for faster updates
+        if (
+            window_index % kwargs.get("pause_interval", 3) == 0
+        ):  # Pauses only occasionally for faster updates
             plt.pause(0.001)  # Updates the active fig & displays it before the pause
 
-    if args.save:
+    if kwargs.get("save", False):
         plt.savefig(f"Obstacle_course({COVERAGE}).jpeg", bbox_inches="tight")
         print("Obstacle course saved to image locally!")
 
     plt.show()  # Causes the image fig to persist after completion
+    return grid
+
+
+if __name__ == "__main__":
+    create_obstacle_grid(coverage=COVERAGE, save=args.save)
