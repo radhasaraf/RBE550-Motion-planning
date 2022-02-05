@@ -3,20 +3,23 @@ import os
 import random
 from typing import Tuple
 
+import matplotlib.pyplot as plt
 from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--coverage", type=int, help="percentage of obstacle coverage in grid"
 )
-args = parser.parse_args()
+parser.add_argument(
+    "--save", type=bool, help="whether to save figure to image(default: False)"
+)
 
+args = parser.parse_args()
 
 COVERAGE = args.coverage
 if not COVERAGE:
     print("Error: Coverage to use isn't specified.")
     os.abort()
-
 
 TOTAL_PIXELS = 128 * 128
 
@@ -67,8 +70,9 @@ if __name__ == "__main__":
 
     desired_coverage = COVERAGE / 100
 
-    current_coverage = 0
+    current_coverage, window_index = 0, 0
     while current_coverage < desired_coverage:
+        window_index += 1
 
         random_x = random.randint(0, 124)
         random_y = random.randint(0, 124)
@@ -79,6 +83,13 @@ if __name__ == "__main__":
         )
         current_coverage = get_coverage(grid)
 
-    grid = grid.resize((600, 600))
-    grid.save(f"Obstacle_course({COVERAGE}).jpeg")
-    print("Obstacle course saved to image locally!")
+        plt.imshow(grid)
+        plt.axis("off")
+        if window_index % 3 == 0:  # Pauses only occasionally for faster updates
+            plt.pause(0.001)  # Updates the active fig & displays it before the pause
+
+    if args.save:
+        plt.savefig(f"Obstacle_course({COVERAGE}).jpeg", bbox_inches="tight")
+        print("Obstacle course saved to image locally!")
+
+    plt.show()  # Causes the image fig to persist after completion
