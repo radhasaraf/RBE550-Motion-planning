@@ -25,7 +25,7 @@ if not COVERAGE:
 def get_coverage(image: Image, size_in_pixels: int) -> float:
     black_pixels = 0
     for pixel in image.getdata():
-        if pixel != 0:
+        if pixel != (0, 0, 0):
             continue
         black_pixels += 1
 
@@ -67,7 +67,8 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
     print(
         f"Creating obstacle grid({grid_size}x{grid_size}) with coverage of {coverage}%"
     )
-    grid = Image.new("1", (grid_size, grid_size), color=1)
+    grid = Image.new("RGB", (grid_size, grid_size), color=(255, 255, 255))
+
     desired_coverage = coverage / 100
 
     current_coverage, window_index = 0, 0
