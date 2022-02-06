@@ -13,13 +13,7 @@ parser.add_argument(
 parser.add_argument(
     "--save", type=bool, help="whether to save figure to image(default: False)"
 )
-
 args = parser.parse_args()
-
-COVERAGE = args.coverage
-if not COVERAGE:
-    print("Error: Coverage to use isn't specified.")
-    os.abort()
 
 
 def get_coverage(image: Image, size_in_pixels: int) -> float:
@@ -92,7 +86,7 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
             plt.pause(0.001)  # Updates the active fig & displays it before the pause
 
     if kwargs.get("save", False):
-        plt.savefig(f"Obstacle_course({COVERAGE}).jpeg", bbox_inches="tight")
+        plt.savefig(f"Obstacle_course({coverage}).jpeg", bbox_inches="tight")
         print("Obstacle course saved to image locally!")
 
     plt.show()  # Causes the image fig to persist after completion
@@ -100,4 +94,10 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
 
 
 if __name__ == "__main__":
-    create_obstacle_grid(coverage=COVERAGE, save=args.save)
+
+    coverage = args.coverage
+    if not coverage:
+        print("Error: Coverage to use isn't specified.")
+        os.abort()
+
+    create_obstacle_grid(coverage=coverage, save=args.save)
