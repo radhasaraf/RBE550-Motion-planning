@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--grid_size", type=int, help="grid size in pixels")
 parser.add_argument(
     "--coverage", type=int, help="percentage of obstacle coverage in grid"
 )
@@ -69,8 +70,8 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
     while current_coverage < desired_coverage:
         window_index += 1
 
-        random_x = random.randint(0, 124)
-        random_y = random.randint(0, 124)
+        random_x = random.randint(0, grid_size - 4)
+        random_y = random.randint(0, grid_size - 4)
         random_tetromino_index = str(random.randint(1, 4))
 
         grid = place_tetromino_in_image(
@@ -95,9 +96,13 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
 
 if __name__ == "__main__":
 
+    grid_size = args.grid_size
+    if not grid_size:
+        grid_size = 128
+
     coverage = args.coverage
     if not coverage:
         print("Error: Coverage to use isn't specified.")
         os.abort()
 
-    create_obstacle_grid(coverage=coverage, save=args.save)
+    create_obstacle_grid(grid_size=grid_size, coverage=coverage, save=args.save)
