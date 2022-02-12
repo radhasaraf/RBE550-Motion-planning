@@ -12,6 +12,9 @@ parser.add_argument(
     "--coverage", type=int, help="percentage of obstacle coverage in grid"
 )
 parser.add_argument(
+    "--display", type=bool, help="whether to display grid during creation"
+)
+parser.add_argument(
     "--save", type=bool, help="whether to save figure to image(default: False)"
 )
 args = parser.parse_args()
@@ -79,18 +82,22 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
         )
         current_coverage = get_coverage(grid, grid_size)
 
-        plt.imshow(grid)
-        plt.axis("off")
-        if (
-            window_index % kwargs.get("pause_interval", 3) == 0
-        ):  # Pauses only occasionally for faster updates
-            plt.pause(0.001)  # Updates the active fig & displays it before the pause
+        if kwargs.get("display"):
+            plt.imshow(grid)
+            plt.axis("off")
+            if (
+                window_index % kwargs.get("pause_interval", 3) == 0
+            ):  # Pauses only occasionally for faster updates
+                plt.pause(
+                    0.001
+                )  # Updates the active fig & displays it before the pause
 
     if kwargs.get("save", False):
         plt.savefig(f"Obstacle_course({coverage}).jpeg", bbox_inches="tight")
         print("Obstacle course saved to image locally!")
 
-    plt.show()  # Causes the image fig to persist after completion
+    if kwargs.get("display"):
+        plt.show()  # Causes the image fig to persist after completion
     return grid
 
 
@@ -105,4 +112,6 @@ if __name__ == "__main__":
         print("Error: Coverage to use isn't specified.")
         os.abort()
 
-    create_obstacle_grid(grid_size=grid_size, coverage=coverage, save=args.save)
+    create_obstacle_grid(
+        grid_size=grid_size, coverage=coverage, save=args.save, display=args.display
+    )
