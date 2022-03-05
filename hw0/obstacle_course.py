@@ -19,6 +19,9 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+obstacle_color = (0, 0, 0)
+# obstacle_color = 0  # This also works for non-binary images
+
 
 def get_coverage(image: Image, size_in_pixels: int) -> float:
     black_pixels = 0
@@ -35,28 +38,28 @@ def place_tetromino_in_image(position: Tuple, tetromino_type: str, image) -> Ima
     y = position[1]
 
     if tetromino_type == "1":  # I tetromino
-        image.putpixel(position, 0)
-        image.putpixel((x, y + 1), 0)
-        image.putpixel((x, y + 2), 0)
-        image.putpixel((x, y + 3), 0)
+        image.putpixel(position, obstacle_color)
+        image.putpixel((x, y + 1), obstacle_color)
+        image.putpixel((x, y + 2), obstacle_color)
+        image.putpixel((x, y + 3), obstacle_color)
 
     elif tetromino_type == "2":  # L tetromino
-        image.putpixel(position, 0)
-        image.putpixel((x + 1, y), 0)
-        image.putpixel((x + 1, y + 1), 0)
-        image.putpixel((x + 1, y + 2), 0)
+        image.putpixel(position, obstacle_color)
+        image.putpixel((x + 1, y), obstacle_color)
+        image.putpixel((x + 1, y + 1), obstacle_color)
+        image.putpixel((x + 1, y + 2), obstacle_color)
 
     elif tetromino_type == "3":  # Z tetromino
-        image.putpixel(position, 0)
-        image.putpixel((x, y + 1), 0)
-        image.putpixel((x + 1, y + 1), 0)
-        image.putpixel((x + 1, y + 2), 0)
+        image.putpixel(position, obstacle_color)
+        image.putpixel((x, y + 1), obstacle_color)
+        image.putpixel((x + 1, y + 1), obstacle_color)
+        image.putpixel((x + 1, y + 2), obstacle_color)
 
     else:  # T tetromino
-        image.putpixel((x + 1, y), 0)
-        image.putpixel((x, y + 1), 0)
-        image.putpixel((x + 1, y + 1), 0)
-        image.putpixel((x + 1, y + 2), 0)
+        image.putpixel((x + 1, y), obstacle_color)
+        image.putpixel((x, y + 1), obstacle_color)
+        image.putpixel((x + 1, y + 1), obstacle_color)
+        image.putpixel((x + 1, y + 2), obstacle_color)
 
     return image
 
@@ -82,8 +85,8 @@ def create_obstacle_grid(grid_size: int = 128, coverage: int = 5, **kwargs) -> I
         )
         current_coverage = get_coverage(grid, grid_size)
 
+        plt.imshow(grid)  # Required to render image on plot
         if kwargs.get("display"):
-            plt.imshow(grid)
             plt.axis("off")
             if (
                 window_index % kwargs.get("pause_interval", 3) == 0
