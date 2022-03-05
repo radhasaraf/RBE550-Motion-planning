@@ -38,28 +38,20 @@ def place_tetromino_in_image(position: Tuple, tetromino_type: str, image) -> Ima
     y = position[1]
 
     if tetromino_type == "1":  # I tetromino
-        image.putpixel(position, obstacle_color)
-        image.putpixel((x, y + 1), obstacle_color)
-        image.putpixel((x, y + 2), obstacle_color)
-        image.putpixel((x, y + 3), obstacle_color)
+        for loc in [position, (x, y + 1), (x, y + 2), (x, y + 3)]:
+            image.putpixel(loc, obstacle_color)
 
     elif tetromino_type == "2":  # L tetromino
-        image.putpixel(position, obstacle_color)
-        image.putpixel((x + 1, y), obstacle_color)
-        image.putpixel((x + 1, y + 1), obstacle_color)
-        image.putpixel((x + 1, y + 2), obstacle_color)
+        for loc in [position, (x, y + 1), (x, y + 2), (x + 1, y + 2)]:
+            image.putpixel(loc, obstacle_color)
 
     elif tetromino_type == "3":  # Z tetromino
-        image.putpixel(position, obstacle_color)
-        image.putpixel((x, y + 1), obstacle_color)
-        image.putpixel((x + 1, y + 1), obstacle_color)
-        image.putpixel((x + 1, y + 2), obstacle_color)
+        for loc in [position, (x + 1, y), (x + 1, y + 1), (x + 2, y + 1)]:
+            image.putpixel(loc, obstacle_color)
 
     else:  # T tetromino
-        image.putpixel((x + 1, y), obstacle_color)
-        image.putpixel((x, y + 1), obstacle_color)
-        image.putpixel((x + 1, y + 1), obstacle_color)
-        image.putpixel((x + 1, y + 2), obstacle_color)
+        for loc in [position, (x + 1, y), (x + 2, y), (x + 1, y + 1)]:
+            image.putpixel(loc, obstacle_color)
 
     return image
 
