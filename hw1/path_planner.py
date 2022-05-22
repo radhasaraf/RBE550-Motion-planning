@@ -45,7 +45,7 @@ def generate_bfs_output(grid_size: int, coverage: int):
     for key, value in stages_without_path_ends.items():
         for coord in value:
             grid.putpixel(coord, powder_blue)
-            plt.imshow(grid)
+        plt.imshow(grid)
         plt.pause(0.001)
 
     # Final path
