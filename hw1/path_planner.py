@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 
 from graph_searches import dfs, bfs, dijkstra, random_planner
 from hw0.obstacle_course import create_obstacle_grid
-from utils import create_adjacency_list, choose_start_and_end_loc
+from utils import (
+    create_adjacency_dict,
+    choose_start_and_end_loc,
+    create_adjacency_dict_for_weighted_graphs,
+)
 
 powder_blue = (182, 208, 226)
 cherry = (210, 4, 45)
@@ -17,7 +21,7 @@ def generate_bfs_output(grid_size: int, coverage: int):
     grid = create_obstacle_grid(grid_size, coverage)
 
     # Get graph representation from image
-    graph = create_adjacency_list(grid)
+    graph = create_adjacency_dict(grid)
 
     # Place path ends on graph
     start, end = choose_start_and_end_loc(grid)
@@ -64,7 +68,7 @@ def generate_dfs_output(grid_size: int, coverage: int):
     grid = create_obstacle_grid(grid_size, coverage)
 
     # Get graph representation from image
-    graph = create_adjacency_list(grid)
+    graph = create_adjacency_dict(grid)
 
     # Place path ends on graph
     start, end = choose_start_and_end_loc(grid)
@@ -99,7 +103,7 @@ def generate_random_traversal_output(grid_size: int, coverage: int):
     grid = create_obstacle_grid(grid_size, coverage)
 
     # Get graph representation from image
-    graph = create_adjacency_list(grid)
+    graph = create_adjacency_dict(grid)
 
     # Place path ends on graph
     start, end = choose_start_and_end_loc(grid)
@@ -134,7 +138,7 @@ def generate_dijkstras_output(grid_size: int, coverage: int):
     grid = create_obstacle_grid(grid_size, coverage)
 
     # Get graph representation from image
-    graph = create_adjacency_list(grid)
+    graph = create_adjacency_dict_for_weighted_graphs(grid)
 
     # Place path ends on graph
     start, end = choose_start_and_end_loc(grid)
