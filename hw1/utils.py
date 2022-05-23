@@ -4,7 +4,7 @@ import math
 from PIL import Image
 
 
-def choose_start_and_end_loc(image: Image) -> List[Tuple]:
+def choose_start_and_end_loc(image: Image) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     """
     Randomly chooses start, end locations in the top left and
     bottom right portions of the image avoiding obstacles.

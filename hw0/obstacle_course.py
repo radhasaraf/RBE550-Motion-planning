@@ -21,6 +21,7 @@ args = parser.parse_args()
 
 obstacle_color = (0, 0, 0)
 # obstacle_color = 0  # This also works for non-binary images
+random.seed(100)
 
 
 def get_coverage(image: Image, size_in_pixels: int) -> float:

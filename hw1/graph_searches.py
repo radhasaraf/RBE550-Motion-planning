@@ -1,7 +1,10 @@
+import math
 import random
 from collections import deque
-from queue import Queue
+from queue import Queue, PriorityQueue
 from typing import Dict, List, Tuple
+
+from numpy import inf
 
 from utils import get_unvisited_children
 
@@ -176,3 +179,55 @@ def dijkstra(graph: Dict, start: Tuple, end: Tuple):
     path.pop()
 
     return level, path, visited
+
+
+def astar(graph: Dict[Tuple, Dict[Tuple, int]], start: Tuple, goal: Tuple):
+
+    tracker = PriorityQueue()
+    traversed_path = []
+
+    cost_from_start = {key: inf for key in graph.keys()}
+    cost_to_goal = {key: None for key in graph.keys()}
+    parent = {key: None for key in graph.keys()}  # Helps backtrace the traversed path
+    level = {key: -1 for key in graph.keys()}
+
+    cost_from_start[start] = 0
+    level[start] = 0
+    tracker.put((0, start))
+
+    while not tracker.empty():
+        print("Still running")
+        current_node = tracker.get()[1]
+        traversed_path.append(current_node)  # This node was actually visited
+
+        if current_node == goal:
+            break
+
+        children = graph[current_node]
+        for child_node in children.keys():
+            # grid.putpixel(child_node, powder_blue)
+            # plt.imshow(grid)
+            # plt.pause(0.001)
+            if child_node in traversed_path:
+                continue
+
+            if child_node == start:
+                continue
+
+            new_cost_from_start = (
+                cost_from_start[current_node] + graph[current_node][child_node]
+            )
+            if new_cost_from_start < cost_from_start[child_node]:  # Relaxation
+                cost_from_start[child_node] = new_cost_from_start
+                parent[child_node] = current_node
+                print(f"Updating cost {new_cost_from_start} for", child_node)
+
+            cost_to_goal[child_node] = cost_from_start[child_node] + 1.5 * math.dist(
+                child_node, goal
+            )
+            tracker.put((cost_to_goal[child_node], child_node))
+            level[child_node] = level[current_node] + 1
+
+    print("Done!")
+
+    return level, traversed_path
