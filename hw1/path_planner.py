@@ -43,7 +43,7 @@ def generate_bfs_output(grid_size: int, coverage: int):
     stages_without_path_ends.pop(stage_for_end_node)
 
     # Traversal
-    for key, value in stages_without_path_ends.items():
+    for key, value in sorted(stages_without_path_ends.items()):
         for coord in value:
             grid.putpixel(coord, powder_blue)
         plt.imshow(grid)
@@ -160,7 +160,7 @@ def generate_dijkstras_output(grid_size: int, coverage: int):
     stages_without_path_ends.pop(stage_for_end_node)
 
     # Traversal
-    for key, value in stages_without_path_ends.items():
+    for key, value in sorted(stages_without_path_ends.items()):
         for coord in value:
             grid.putpixel(coord, powder_blue)
             plt.imshow(grid)
