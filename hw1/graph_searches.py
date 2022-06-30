@@ -54,7 +54,7 @@ def bfs(graph: Dict, start: Tuple, end: Tuple):
     return level, path, visited
 
 
-def dfs(graph: Dict, start: Tuple, end: Tuple) -> List:
+def dfs(graph: Dict, start: Tuple, end: Tuple) -> Tuple[List, List]:
     """
     Traverses the graph using DFS logic.
     """
@@ -91,7 +91,15 @@ def dfs(graph: Dict, start: Tuple, end: Tuple) -> List:
             current_node = child
             break
 
-    return traversed_path
+    final_path = []
+    current = end
+    while current != start:
+        next = parent[current]
+        final_path.append(next)
+        current = next
+    final_path.pop()
+
+    return traversed_path, final_path
 
 
 def random_planner(graph: Dict, start: Tuple, end: Tuple) -> List:

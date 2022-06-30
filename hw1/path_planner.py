@@ -74,7 +74,7 @@ def generate_dfs_output(grid_size: int, coverage: int):
     grid.putpixel(end, forest_green)
     plt.imshow(grid)
 
-    traversal = dfs(graph, start, end)
+    traversal, path = dfs(graph, start, end)
 
     # Remove ends so as not to overwrite the (start, end) color in the graph
     traversal.pop(0)
@@ -87,12 +87,12 @@ def generate_dfs_output(grid_size: int, coverage: int):
         plt.pause(0.001)
 
     # Final path
-    for node in traversal:
+    for node in path:
         grid.putpixel(node, kelly_green)
 
     plt.imshow(grid)
     plt.show()
-    print("Iterations taken:", len(traversal))
+    print("Iterations taken:", len(path))
 
 
 def generate_random_traversal_output(grid_size: int, coverage: int):
