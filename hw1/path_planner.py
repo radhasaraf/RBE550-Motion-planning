@@ -1,5 +1,3 @@
-import copy
-
 import matplotlib.pyplot as plt
 
 from graph_searches import dfs, bfs, dijkstra, random_planner, astar
@@ -31,19 +29,18 @@ def generate_bfs_output(grid_size: int, coverage: int):
     plt.imshow(grid)
 
     nodes_with_stages, path, visited = bfs(graph, start, end)
-    stage_for_end_node = nodes_with_stages.get(end)
 
     level_order = {}
     for k, v in nodes_with_stages.items():
         level_order[v] = level_order.get(v, []) + [k]
-    level_order.pop(-1)
 
-    stages_without_path_ends = copy.deepcopy(level_order)
-    stages_without_path_ends.pop(0)
-    stages_without_path_ends.pop(stage_for_end_node)
+    # Remove nodes that don't need plotting
+    level_order.pop(-1)  # Unassigned nodes (default level -1)
+    level_order.pop(0)  # start node
+    level_order.pop(nodes_with_stages.get(end))  # end node
 
     # Traversal
-    for key, value in sorted(stages_without_path_ends.items()):
+    for key, value in sorted(level_order.items()):
         for coord in value:
             grid.putpixel(coord, powder_blue)
         plt.imshow(grid)
@@ -77,26 +74,25 @@ def generate_dfs_output(grid_size: int, coverage: int):
     grid.putpixel(end, forest_green)
     plt.imshow(grid)
 
-    path = dfs(graph, start, end)
+    traversal = dfs(graph, start, end)
 
-    # Remove path ends so as not to overwrite the color in the graph
-    path_without_ends = copy.deepcopy(path)
-    path_without_ends.pop(0)
-    path_without_ends.pop()
+    # Remove ends so as not to overwrite the (start, end) color in the graph
+    traversal.pop(0)
+    traversal.pop()
 
     # Traversal
-    for coord in path_without_ends:
+    for coord in traversal:
         grid.putpixel(coord, powder_blue)
         plt.imshow(grid)
         plt.pause(0.001)
 
     # Final path
-    for node in path_without_ends:
+    for node in traversal:
         grid.putpixel(node, kelly_green)
 
     plt.imshow(grid)
     plt.show()
-    print("Iterations taken:", len(path))
+    print("Iterations taken:", len(traversal))
 
 
 def generate_random_traversal_output(grid_size: int, coverage: int):
@@ -115,19 +111,18 @@ def generate_random_traversal_output(grid_size: int, coverage: int):
 
     path = random_planner(graph, start, end)
 
-    # Remove path ends so as not to overwrite the color in the graph
-    path_without_ends = copy.deepcopy(path)
-    path_without_ends.pop(0)
-    path_without_ends.pop()
+    # Remove ends so as not to overwrite the (start, end) color in the graph
+    path.pop(0)
+    path.pop()
 
     # Traversal
-    for coord in path_without_ends:
+    for coord in path:
         grid.putpixel(coord, powder_blue)
         plt.imshow(grid)
         plt.pause(0.001)
 
     # Final path
-    for node in path_without_ends:
+    for node in path:
         grid.putpixel(node, kelly_green)
 
     plt.imshow(grid)
@@ -148,19 +143,18 @@ def generate_dijkstras_output(grid_size: int, coverage: int):
     plt.imshow(grid)
 
     nodes_with_stages, path, visited = dijkstra(graph, start, end)
-    stage_for_end_node = nodes_with_stages.get(end)
 
     level_order = {}
     for k, v in nodes_with_stages.items():
         level_order[v] = level_order.get(v, []) + [k]
-    level_order.pop(-1)
 
-    stages_without_path_ends = copy.deepcopy(level_order)
-    stages_without_path_ends.pop(0)
-    stages_without_path_ends.pop(stage_for_end_node)
+    # Remove nodes that don't need plotting
+    level_order.pop(-1)  # Unassigned nodes (default level -1)
+    level_order.pop(0)  # start node
+    level_order.pop(nodes_with_stages.get(end))  # end node
 
     # Traversal
-    for key, value in sorted(stages_without_path_ends.items()):
+    for key, value in sorted(level_order.items()):
         for coord in value:
             grid.putpixel(coord, powder_blue)
             plt.imshow(grid)
@@ -192,25 +186,26 @@ def generate_astar_output(grid_size: int, coverage: int):
     level_order = {}
     for k, v in nodes_with_stages.items():
         level_order[v] = level_order.get(v, []) + [k]
+
+    # Remove nodes that don't need plotting
     level_order.pop(0)
     level_order.pop(-1)
 
     # Remove path ends so as not to overwrite the color in the graph
-    path_without_ends = copy.deepcopy(path)
-    path_without_ends.pop(0)
+    path.pop(0)
 
     # Traversal
     index = 0
-    for key, value in level_order.items():
+    for key, value in sorted(level_order.items()):
         for coord in value:
             grid.putpixel(coord, powder_blue)
-        grid.putpixel(path_without_ends[index], rosybrown)
+        grid.putpixel(path[index], rosybrown)
         plt.imshow(grid)
         plt.pause(0.001)
         index += 1
 
     # Final path
-    for node in path_without_ends:
+    for node in path:
         grid.putpixel(node, kelly_green)
 
     grid.putpixel(end, forest_green)
