@@ -1,10 +1,23 @@
 ### Assignment 2: Flatland
 
-1. Install requirements:
+Planning algorithms - Breadth first search, Depth first search, Dijkstra’s, and
+A* have been implemented on a grid world environment of configurable obstacle
+density.
 
-    `pip install -r requirements.txt`
+### Prerequisites
+
+1. Add to your .bashrc
+
+   `export PYTHONPATH=/home/<user>/RBE550-Motion-planning/`
 
 
-2. Add to your .bashrc
+2. Create virtual env. and source it
 
-    `export PYTHONPATH=/home/<user>/RBE550-Motion-planning/`
+   `python3.9 -m venv venv`
+
+   `source venv/bin/activate`
+
+
+2. Install requirements:
+
+   `pip install -r requirements.txt`
