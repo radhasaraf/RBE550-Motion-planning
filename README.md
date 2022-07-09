@@ -30,7 +30,7 @@ density.
 
 2. Create virtual env. and source it
 
-   `python3.9 -m venv venv`
+   `python3.9-venv -m venv venv`
 
    `source venv/bin/activate`
 
