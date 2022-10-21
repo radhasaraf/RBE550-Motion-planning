@@ -1,9 +1,6 @@
 # RBE550-Motion-planning
 
-### Assignment 1: Turtles
-TBF
-
-### Assignment 2: Flatland
+### Assignment: Flatland
 
 Planning algorithms - Breadth first search, Depth first search, Dijkstra’s, and
 A* have been implemented on a grid world environment of configurable obstacle
